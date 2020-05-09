@@ -12,4 +12,6 @@ export interface Trace {
     isForward: boolean;
 }
 
+export const cloneState = (state: State): State => ({ coordinate: { ...state.coordinate }, orientation: state.orientation });
+
 export type Hint = State;

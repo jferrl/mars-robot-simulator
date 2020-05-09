@@ -3,7 +3,7 @@ import deepEqual from 'deep-equal';
 import { Command } from './command';
 import { computeOrientation, Orientation, Rotation } from './position';
 import RobotState from './robot-state';
-import { Hint, State, Trace } from './state';
+import { cloneState, Hint, State, Trace } from './state';
 
 export default class Robot extends RobotState {
     private hints: Hint[];
@@ -42,9 +42,12 @@ export default class Robot extends RobotState {
     }
 
     private forward(): void {
-        if (!this.canForward()) return;
+        const state = cloneState(this.currentState);
+        if (!this.canForward()) {
+            this.addState(state);
+            return;
+        }
 
-        const state = { ...this.currentState };
         switch (this.orientation) {
             case Orientation.North:
                 state.coordinate.y++;
@@ -74,7 +77,7 @@ export default class Robot extends RobotState {
     }
 
     private rotate(rotation: Rotation): void {
-        const state = { ...this.currentState };
+        const state: State = cloneState(this.currentState);
         state.orientation = computeOrientation(this.orientation + rotation);
         this.addState(state);
     }
