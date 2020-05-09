@@ -65,7 +65,7 @@ describe('Robot', (): void => {
                 [aState(aPoint(4, 0), Orientation.North), aState(aPoint(2, 1), Orientation.West), aState(aPoint(4, 4), Orientation.South)],
                 { from: aState(aPoint(2, 1), Orientation.West), to: aState(aPoint(2, 1), Orientation.West), isForward: false }
             ]
-        ]).test('should return the actual trace of the robot', (robot: Robot, command: Command, hints: Hint[], expectedTrace: Trace): void => {
+        ]).test('should return the current state of the robot', (robot: Robot, command: Command, hints: Hint[], expectedTrace: Trace): void => {
             expect(robot.withHints(hints).execute(command)).toEqual(expectedTrace);
         });
     });
