@@ -2,11 +2,9 @@ import each from 'jest-each';
 
 import MarsSurface, { Point } from '../src/grid';
 
-import { aPoint } from './helpers';
+import { aPoint, marsSurface } from './helpers';
 
 describe('MarsSurface', (): void => {
-    const marsSurface = (width: number, height: number): MarsSurface => new MarsSurface(width, height);
-
     describe('constructor', (): void => {
         it('should create a defined instance', (): void => {
             expect(marsSurface(0, 0)).toBeDefined();

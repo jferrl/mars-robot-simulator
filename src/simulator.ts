@@ -17,8 +17,8 @@ export default class Simulator {
         this.invalidStates = [];
     }
 
-    createSimulation(robot: Robot, commands: Command[]): void {
-        this.simulations.push({ robot, commands });
+    createSimulation(robot: Robot, commands: Command[]): number {
+        return this.simulations.push({ robot, commands });
     }
 
     start(): void {
