@@ -2,7 +2,7 @@ import deepEqual from 'deep-equal';
 
 import { Point } from './grid';
 import { Orientation } from './position';
-import { State, Trace, cloneState } from './state';
+import { cloneState, State, Trace } from './state';
 
 export default class RobotState {
     protected readonly states: State[];
