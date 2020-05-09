@@ -11,4 +11,5 @@ export interface Trace {
     to: State;
 }
 
+export type EmptyTrace = undefined;
 export type Hint = State;

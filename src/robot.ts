@@ -1,7 +1,9 @@
+import deepEqual from 'deep-equal';
+
 import { Command } from './command';
 import { Orientation, Rotation } from './position';
 import RobotState from './robot-state';
-import { Hint, State, Trace } from './state';
+import { EmptyTrace, Hint, State, Trace } from './state';
 
 export default class Robot extends RobotState {
     private hints: Hint[];
@@ -11,7 +13,7 @@ export default class Robot extends RobotState {
         this.hints = [];
     }
 
-    execute(command: Command): Trace | undefined {
+    execute(command: Command): Trace | EmptyTrace {
         switch (command) {
             case Command.Left:
                 this.turnLeft();
@@ -20,9 +22,9 @@ export default class Robot extends RobotState {
                 this.turnRight();
                 break;
             case Command.Forward:
-                return this.forward() ? this.traces : undefined;
+                return this.forward() ? this.traces : this.emptyTrace;
         }
-        return undefined;
+        return this.emptyTrace;
     }
 
     withHints(hints: Hint[]): Robot {
@@ -62,7 +64,7 @@ export default class Robot extends RobotState {
     private canForward(): boolean {
         let isValidMovement: boolean = true;
         for (const hint of this.hints) {
-            if (this.currentState === hint) {
+            if (deepEqual(this.currentState, hint, { strict: true })) {
                 isValidMovement = false;
                 break;
             }

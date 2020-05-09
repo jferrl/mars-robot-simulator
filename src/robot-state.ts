@@ -1,6 +1,6 @@
 import { Point } from './grid';
 import { Orientation } from './position';
-import { State, Trace } from './state';
+import { EmptyTrace, State, Trace } from './state';
 
 export default class RobotState {
     private readonly states: State[];
@@ -35,5 +35,9 @@ export default class RobotState {
             from: this.previousState,
             to: this.currentState
         };
+    }
+
+    protected get emptyTrace(): EmptyTrace {
+        return undefined;
     }
 }

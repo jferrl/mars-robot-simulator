@@ -1,19 +1,18 @@
-import { Point } from '../src/grid';
 import { Orientation } from '../src/position';
-import Robot from '../src/robot';
-import { State } from '../src/state';
+
+import { aPoint, aRobot } from './helpers';
 
 describe('Robot', (): void => {
-    const aRobot = (currentState: State): Robot => new Robot(currentState);
-    const aState = (coordinate: Point, orientation: Orientation): State => ({
-        coordinate,
-        orientation
-    });
-    const aPoint = (x: number, y: number): Point => ({ x, y });
-
     describe('constructor', (): void => {
         it('should create a defined instance', (): void => {
-            expect(aRobot(aState(aPoint(0, 0), Orientation.North))).toBeDefined();
+            expect(aRobot(aPoint(0, 0), Orientation.North)).toBeDefined();
+        });
+    });
+
+    describe('withHints', (): void => {
+        it('should return the current instance', (): void => {
+            const robot = aRobot(aPoint(0, 0), Orientation.North);
+            expect(robot.withHints([])).toBeDefined();
         });
     });
 });
