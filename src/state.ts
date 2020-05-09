@@ -9,7 +9,7 @@ export interface State {
 export interface Trace {
     from: State;
     to: State;
+    isForward: boolean;
 }
 
-export type EmptyTrace = undefined;
 export type Hint = State;

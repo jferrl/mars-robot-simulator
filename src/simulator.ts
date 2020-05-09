@@ -30,7 +30,7 @@ export default class Simulator {
     private runSimulation(robot: Robot, commands: Command[]): void {
         for (const command of commands) {
             const trace = robot.execute(command);
-            if (trace && !this.grid.hasPoint(trace.to.coordinate)) {
+            if (trace.isForward && !this.grid.hasPoint(trace.to.coordinate)) {
                 this.invalidStates.push(trace.from);
                 break;
             }

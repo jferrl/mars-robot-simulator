@@ -1,12 +1,14 @@
+import deepEqual from 'deep-equal';
+
 import { Point } from './grid';
 import { Orientation } from './position';
-import { EmptyTrace, State, Trace } from './state';
+import { State, Trace } from './state';
 
 export default class RobotState {
     private readonly states: State[];
 
-    constructor(currentState: State) {
-        this.states = [currentState];
+    constructor(state: State) {
+        this.states = [state];
     }
 
     protected get currentState(): State {
@@ -17,11 +19,6 @@ export default class RobotState {
         return this.states[this.states.length - 2];
     }
 
-    protected addState(state: State): boolean {
-        this.states.push(state);
-        return true;
-    }
-
     protected get orientation(): Orientation {
         return this.currentState.orientation;
     }
@@ -30,14 +27,15 @@ export default class RobotState {
         return this.currentState.coordinate;
     }
 
-    protected get traces(): Trace {
+    protected get trace(): Trace {
         return {
-            from: this.previousState,
-            to: this.currentState
+            from: { ...this.previousState },
+            to: { ...this.currentState },
+            isForward: !deepEqual(this.previousState.coordinate, this.currentState.coordinate)
         };
     }
 
-    protected get emptyTrace(): EmptyTrace {
-        return undefined;
+    protected addState(state: State): void {
+        this.states.push(state);
     }
 }

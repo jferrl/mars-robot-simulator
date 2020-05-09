@@ -1,19 +1,19 @@
 import deepEqual from 'deep-equal';
 
 import { Command } from './command';
-import { Orientation, Rotation } from './position';
+import { computeOrientation, Orientation, Rotation } from './position';
 import RobotState from './robot-state';
-import { EmptyTrace, Hint, State, Trace } from './state';
+import { Hint, State, Trace } from './state';
 
 export default class Robot extends RobotState {
     private hints: Hint[];
 
-    constructor(currentState: State) {
-        super(currentState);
+    constructor(state: State) {
+        super(state);
         this.hints = [];
     }
 
-    execute(command: Command): Trace | EmptyTrace {
+    execute(command: Command): Trace {
         switch (command) {
             case Command.Left:
                 this.turnLeft();
@@ -22,9 +22,10 @@ export default class Robot extends RobotState {
                 this.turnRight();
                 break;
             case Command.Forward:
-                return this.forward() ? this.traces : this.emptyTrace;
+                this.forward();
+                break;
         }
-        return this.emptyTrace;
+        return this.trace;
     }
 
     withHints(hints: Hint[]): Robot {
@@ -40,8 +41,8 @@ export default class Robot extends RobotState {
         this.rotate(Rotation.Right);
     }
 
-    private forward(): boolean {
-        if (!this.canForward()) return false;
+    private forward(): void {
+        if (!this.canForward()) return;
 
         const state = { ...this.currentState };
         switch (this.orientation) {
@@ -58,7 +59,7 @@ export default class Robot extends RobotState {
                 state.coordinate.x--;
                 break;
         }
-        return this.addState(state);
+        this.addState(state);
     }
 
     private canForward(): boolean {
@@ -74,7 +75,7 @@ export default class Robot extends RobotState {
 
     private rotate(rotation: Rotation): void {
         const state = { ...this.currentState };
-        state.orientation = (this.orientation + rotation) % Object.keys(Orientation).length;
+        state.orientation = computeOrientation(this.orientation + rotation);
         this.addState(state);
     }
 }
