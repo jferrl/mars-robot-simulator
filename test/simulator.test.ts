@@ -1,9 +1,9 @@
 // import each from 'jest-each';
+import { Command } from '../src/command';
+import { Orientation } from '../src/position';
 import Simulator from '../src/simulator';
 
-import { marsSurface, aRobot, aPoint } from './helpers';
-import { Orientation } from '../src/position';
-import { Command } from '../src/command';
+import { aPoint, aRobot, marsSurface } from './helpers';
 
 describe('Simulator', (): void => {
     const aSimulator = (width: number, height: number): Simulator => new Simulator(marsSurface(width, height));
