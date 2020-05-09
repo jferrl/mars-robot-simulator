@@ -7,7 +7,7 @@
         "start": "npm run build && node dist/index.js",
         "build": "npm run build-ts",
         "build-ts": "tsc",
-        "test": "jest --forceExit --coverage --verbose --detectOpenHandles",
+        "test": "jest --forceExit --verbose --detectOpenHandles",
         "watch-test": "npm run test -- --watchAll"
     },
     "repository": {
