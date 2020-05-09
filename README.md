@@ -1,5 +1,9 @@
 # Mars Robot Simulator
 
+[![Build Status](https://travis-ci.org/jferrl/mars-robot-simulator.svg?branch=master)](https://travis-ci.org/jferrl/mars-robot-simulator)
+[![Maintainability](https://api.codeclimate.com/v1/badges/03835cd9e1424e8b026a/maintainability)](https://codeclimate.com/github/jferrl/mars-robot-simulator/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/03835cd9e1424e8b026a/test_coverage)](https://codeclimate.com/github/jferrl/mars-robot-simulator/test_coverage)
+
 The main purpose of this repository is to show a basic end-to-end project setup and workflow for writing Node code in TypeScript.
 Based on [microsoft/TypeScript-Node-Starter](https://github.com/microsoft/TypeScript-Node-Starter)
 
