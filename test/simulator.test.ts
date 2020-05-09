@@ -1,7 +1,8 @@
-// import each from 'jest-each';
+import each from 'jest-each';
+
 import { Command } from '../src/command';
 import { Orientation } from '../src/position';
-import Simulator from '../src/simulator';
+import Simulator, { Simulation } from '../src/simulator';
 
 import { aPoint, aRobot, marsSurface } from './helpers';
 
@@ -22,18 +23,65 @@ describe('Simulator', (): void => {
             expect(simulator.createSimulation(aRobot(aPoint(0, 10), Orientation.South), [Command.Forward, Command.Right])).toEqual(2);
         });
     });
-
     describe('start', (): void => {
-        // each([
-        //     [marsSurface(43, 0), aPoint(44, 1), false],
-        //     [marsSurface(0, 0), aPoint(0, 1), false],
-        //     [marsSurface(12, 11), aPoint(-1, 1), false],
-        //     [marsSurface(20, 11), aPoint(10, -1), false],
-        //     [marsSurface(43, 1), aPoint(30, 0), true],
-        //     [marsSurface(1, 1), aPoint(1, 1), true],
-        //     [marsSurface(0, 0), aPoint(0, 0), true]
-        // ]).test('should return if a point in inside the grid', (grid: MarsSurface, point: Point, expected: boolean): void => {
-        //     expect(grid.hasPoint(point)).toBe(expected);
-        // });
+        each([
+            [
+                5,
+                3,
+                [
+                    {
+                        commands: [
+                            Command.Right,
+                            Command.Forward,
+                            Command.Right,
+                            Command.Forward,
+                            Command.Right,
+                            Command.Forward,
+                            Command.Right,
+                            Command.Forward
+                        ],
+                        robot: aRobot(aPoint(1, 1), Orientation.East)
+                    },
+                    {
+                        commands: [
+                            Command.Forward,
+                            Command.Right,
+                            Command.Right,
+                            Command.Forward,
+                            Command.Left,
+                            Command.Left,
+                            Command.Forward,
+                            Command.Forward,
+                            Command.Right,
+                            Command.Right,
+                            Command.Forward,
+                            Command.Left,
+                            Command.Left
+                        ],
+                        robot: aRobot(aPoint(3, 2), Orientation.North)
+                    },
+                    {
+                        commands: [
+                            Command.Left,
+                            Command.Left,
+                            Command.Forward,
+                            Command.Forward,
+                            Command.Forward,
+                            Command.Left,
+                            Command.Forward,
+                            Command.Left,
+                            Command.Forward,
+                            Command.Left
+                        ],
+                        robot: aRobot(aPoint(0, 3), Orientation.West)
+                    }
+                ],
+                ['11East', '33NorthLOST', '23South']
+            ]
+        ]).test('should execute all simulations', (width: number, height: number, simulations: Simulation[], expected: string[]): void => {
+            const simulator = aSimulator(width, height);
+            simulator.withSimulations(simulations);
+            expect(simulator.start()).toEqual(expected);
+        });
     });
 });

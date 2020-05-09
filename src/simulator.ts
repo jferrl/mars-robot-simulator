@@ -1,7 +1,8 @@
 import { Command } from './command';
 import { Grid } from './grid';
+import { Orientation } from './position';
 import Robot from './robot';
-import { Hint } from './state';
+import { Hint, State } from './state';
 
 export interface Simulation {
     robot: Robot;
@@ -17,23 +18,41 @@ export default class Simulator {
         this.invalidStates = [];
     }
 
+    withSimulations(simulations: Simulation[]): void {
+        this.simulations.push(...simulations);
+    }
+
     createSimulation(robot: Robot, commands: Command[]): number {
         return this.simulations.push({ robot, commands });
     }
 
-    start(): void {
+    start(): string[] {
+        const results: string[] = [];
         this.simulations.forEach((simulation: Simulation): void => {
-            this.runSimulation(simulation.robot.withHints(this.invalidStates), simulation.commands);
+            const result = this.runSimulation(simulation.robot.withHints(this.invalidStates), simulation.commands);
+            results.push(result);
         });
+        return results;
     }
 
-    private runSimulation(robot: Robot, commands: Command[]): void {
+    private runSimulation(robot: Robot, commands: Command[]): string {
+        let trace: any = {};
         for (const command of commands) {
-            const trace = robot.execute(command);
+            trace = robot.execute(command);
             if (trace.isForward && !this.grid.hasPoint(trace.to.coordinate)) {
-                this.invalidStates.push(trace.from);
-                break;
+                this.registerInvalidState(trace.from);
+                return formatStateResult(trace.from, true);
             }
         }
+        return formatStateResult(trace.to);
+    }
+
+    private registerInvalidState(state: State): void {
+        this.invalidStates.push(state);
     }
 }
+
+const formatStateResult = (state: State, isLost: boolean = false): string => {
+    const template = `${state.coordinate.x}${state.coordinate.y}${Orientation[state.orientation]}`;
+    return isLost ? `${template}LOST` : template;
+};
