@@ -1,0 +1,37 @@
+{
+    "name": "mars-robot-simulator",
+    "version": "0.0.1",
+    "description": "A mars robot simulator",
+    "main": "index.js",
+    "scripts": {
+        "start": "npm run build && node dist/index.js",
+        "build": "npm run build-ts",
+        "build-ts": "tsc",
+        "test": "jest --forceExit --coverage --verbose --detectOpenHandles",
+        "watch-test": "npm run test -- --watchAll"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/jferrl/mars-robot-simulator.git"
+    },
+    "keywords": [
+        "ts",
+        "nodejs"
+    ],
+    "author": "jferrl",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/jferrl/mars-robot-simulator/issues"
+    },
+    "homepage": "https://github.com/jferrl/mars-robot-simulator#readme",
+    "devDependencies": {
+        "@types/jest": "^25.2.1",
+        "@types/node": "^13.13.5",
+        "jest": "^26.0.1",
+        "jest-each": "^26.0.1",
+        "ts-jest": "^25.5.0",
+        "tslint": "^6.1.2",
+        "tslint-config-prettier": "^1.18.0",
+        "typescript": "^3.8.3"
+    }
+}
