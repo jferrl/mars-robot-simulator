@@ -47,7 +47,11 @@ export default class Robot extends RobotState {
             this.addState(state);
             return;
         }
+        this.move(state);
+        this.addState(state);
+    }
 
+    private move(state: State): void {
         switch (this.orientation) {
             case Orientation.North:
                 state.coordinate.y++;
@@ -62,7 +66,6 @@ export default class Robot extends RobotState {
                 state.coordinate.x--;
                 break;
         }
-        this.addState(state);
     }
 
     private canForward(): boolean {

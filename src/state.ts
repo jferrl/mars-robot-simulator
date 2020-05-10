@@ -9,7 +9,6 @@ export interface State {
 export interface Trace {
     from: State;
     to: State;
-    isForward: boolean;
 }
 
 export const cloneState = (state: State): State => ({ coordinate: { ...state.coordinate }, orientation: state.orientation });

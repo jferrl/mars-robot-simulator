@@ -1,5 +1,3 @@
-import deepEqual from 'deep-equal';
-
 import { Point } from './grid';
 import { Orientation } from './position';
 import { cloneState, State, Trace } from './state';
@@ -30,8 +28,7 @@ export default class RobotState {
     protected get trace(): Trace {
         return {
             from: cloneState(this.previousState),
-            to: cloneState(this.currentState),
-            isForward: !deepEqual(this.previousState.coordinate, this.coordinate)
+            to: cloneState(this.currentState)
         };
     }
 

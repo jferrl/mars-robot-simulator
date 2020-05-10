@@ -27,43 +27,43 @@ describe('Robot', (): void => {
                 aRobot(aPoint(0, 0), Orientation.North),
                 Command.Left,
                 [],
-                { from: aState(aPoint(0, 0), Orientation.North), to: aState(aPoint(0, 0), Orientation.West), isForward: false }
+                { from: aState(aPoint(0, 0), Orientation.North), to: aState(aPoint(0, 0), Orientation.West) }
             ],
             [
                 aRobot(aPoint(0, 0), Orientation.East),
                 Command.Right,
                 [],
-                { from: aState(aPoint(0, 0), Orientation.East), to: aState(aPoint(0, 0), Orientation.South), isForward: false }
+                { from: aState(aPoint(0, 0), Orientation.East), to: aState(aPoint(0, 0), Orientation.South) }
             ],
             [
                 aRobot(aPoint(0, 0), Orientation.North),
                 Command.Forward,
                 [],
-                { from: aState(aPoint(0, 0), Orientation.North), to: aState(aPoint(0, 1), Orientation.North), isForward: true }
+                { from: aState(aPoint(0, 0), Orientation.North), to: aState(aPoint(0, 1), Orientation.North) }
             ],
             [
                 aRobot(aPoint(2, 1), Orientation.South),
                 Command.Forward,
                 [],
-                { from: aState(aPoint(2, 1), Orientation.South), to: aState(aPoint(2, 0), Orientation.South), isForward: true }
+                { from: aState(aPoint(2, 1), Orientation.South), to: aState(aPoint(2, 0), Orientation.South) }
             ],
             [
                 aRobot(aPoint(2, 1), Orientation.East),
                 Command.Forward,
                 [],
-                { from: aState(aPoint(2, 1), Orientation.East), to: aState(aPoint(3, 1), Orientation.East), isForward: true }
+                { from: aState(aPoint(2, 1), Orientation.East), to: aState(aPoint(3, 1), Orientation.East) }
             ],
             [
                 aRobot(aPoint(2, 1), Orientation.West),
                 Command.Forward,
                 [],
-                { from: aState(aPoint(2, 1), Orientation.West), to: aState(aPoint(1, 1), Orientation.West), isForward: true }
+                { from: aState(aPoint(2, 1), Orientation.West), to: aState(aPoint(1, 1), Orientation.West) }
             ],
             [
                 aRobot(aPoint(2, 1), Orientation.West),
                 Command.Forward,
                 [aState(aPoint(4, 0), Orientation.North), aState(aPoint(2, 1), Orientation.West), aState(aPoint(4, 4), Orientation.South)],
-                { from: aState(aPoint(2, 1), Orientation.West), to: aState(aPoint(2, 1), Orientation.West), isForward: false }
+                { from: aState(aPoint(2, 1), Orientation.West), to: aState(aPoint(2, 1), Orientation.West) }
             ]
         ]).test('should return the current state of the robot', (robot: Robot, command: Command, hints: Hint[], expectedTrace: Trace): void => {
             expect(robot.withHints(hints).execute(command)).toEqual(expectedTrace);

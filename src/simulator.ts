@@ -2,7 +2,7 @@ import { Command } from './command';
 import { Grid } from './grid';
 import { Orientation } from './position';
 import Robot from './robot';
-import { Hint, State } from './state';
+import { Hint, State, Trace } from './state';
 
 export interface Simulation {
     robot: Robot;
@@ -39,12 +39,17 @@ export default class Simulator {
         let trace: any = {};
         for (const command of commands) {
             trace = robot.execute(command);
-            if (trace.isForward && !this.grid.hasPoint(trace.to.coordinate)) {
+
+            if (this.isInvalidMovement(trace, command)) {
                 this.registerInvalidState(trace.from);
                 return formatStateResult(trace.from, true);
             }
         }
         return formatStateResult(trace.to);
+    }
+
+    private isInvalidMovement(trace: Trace, command: Command): boolean {
+        return command === Command.Forward && !this.grid.hasPoint(trace.to.coordinate);
     }
 
     private registerInvalidState(state: State): void {
