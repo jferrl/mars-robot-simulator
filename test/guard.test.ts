@@ -6,6 +6,7 @@ describe('isDefined', (): void => {
     const fakeObject: any = {};
     each([
         [fakeObject, undefined, true],
+        [fakeObject, ' ', true],
         [fakeObject, '', true],
         [undefined, 'fakeObject', true],
         [null, 'fakeObject', true],
