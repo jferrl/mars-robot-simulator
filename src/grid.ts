@@ -13,7 +13,14 @@ export default class MarsSurface implements Grid {
     constructor(private readonly width: number, private readonly height: number) {}
 
     hasPoint(point: Point): boolean {
-        if (point.x < MarsSurface.zero || point.y < MarsSurface.zero) return false;
-        return point.x <= this.width && point.y <= this.height;
+        return this.isInXAxisScope(point.x) && this.isInYAxisScope(point.y);
+    }
+
+    private isInXAxisScope(x: number): boolean {
+        return x >= MarsSurface.zero && x <= this.width;
+    }
+
+    private isInYAxisScope(y: number): boolean {
+        return y >= MarsSurface.zero && y <= this.height;
     }
 }
