@@ -20,7 +20,7 @@ export default class Simulator {
         this.invalidStates = [];
     }
 
-    // bulk insert of simulations ready for test Simulator
+    // bulk insert of simulations (only for test Simulator)
     withSimulations(simulations: Simulation[]): void {
         isDefined(simulations, 'simulations');
         this.simulations.push(...simulations);
