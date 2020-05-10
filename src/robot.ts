@@ -69,14 +69,14 @@ export default class Robot extends RobotState {
     }
 
     private canForward(): boolean {
-        let isValidMovement: boolean = true;
+        let canForward: boolean = true;
         for (const hint of this.hints) {
             if (deepEqual(this.currentState, hint, { strict: true })) {
-                isValidMovement = false;
+                canForward = false;
                 break;
             }
         }
-        return isValidMovement;
+        return canForward;
     }
 
     private rotate(rotation: Rotation): void {
