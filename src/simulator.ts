@@ -1,5 +1,5 @@
 import { Command } from './command';
-import { Grid } from './grid';
+import { Grid, Point } from './grid';
 import { isDefined } from './guard';
 import { Orientation } from './position';
 import Robot from './robot';
@@ -20,15 +20,20 @@ export default class Simulator {
         this.invalidStates = [];
     }
 
+    // bulk insert of simulations ready for test Simulator
     withSimulations(simulations: Simulation[]): void {
         isDefined(simulations, 'simulations');
         this.simulations.push(...simulations);
     }
 
-    createSimulation(robot: Robot, commands: Command[]): number {
-        isDefined(robot, 'robot');
+    createSimulation(robotState: State, commands: Command[]): number {
+        isDefined(robotState, 'robotState');
         isDefined(commands, 'commands');
-        return this.simulations.push({ robot, commands });
+
+        if (!this.isValidCoordinate(robotState.coordinate)) {
+            throw new Error('invalid robot coordinate: out of map scope');
+        }
+        return this.simulations.push({ robot: new Robot(robotState), commands });
     }
 
     start(): string[] {
@@ -53,8 +58,12 @@ export default class Simulator {
         return formatStateResult(trace.to);
     }
 
+    private isValidCoordinate(point: Point): boolean {
+        return this.grid.hasPoint(point);
+    }
+
     private isInvalidMovement(trace: Trace, command: Command): boolean {
-        return command === Command.Forward && !this.grid.hasPoint(trace.to.coordinate);
+        return command === Command.Forward && !this.isValidCoordinate(trace.to.coordinate);
     }
 
     private registerInvalidState(state: State): void {

@@ -7,6 +7,8 @@ export default class RobotState {
 
     constructor(state: State) {
         isDefined(state, 'state');
+        isDefined(state.orientation, 'orientation');
+        isDefined(state.coordinate, 'coordinate');
         this.states = [state];
     }
 
