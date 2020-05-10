@@ -1,3 +1,4 @@
+import { isDefined } from './guard';
 import { Orientation } from './position';
 import { cloneState, State, Trace } from './state';
 
@@ -5,6 +6,7 @@ export default class RobotState {
     protected readonly states: State[];
 
     constructor(state: State) {
+        isDefined(state, 'state');
         this.states = [state];
     }
 

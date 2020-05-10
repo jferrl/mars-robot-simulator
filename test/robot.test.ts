@@ -9,6 +9,11 @@ import { aPoint, aRobot, aState } from './helpers';
 
 describe('Robot', (): void => {
     describe('constructor', (): void => {
+        it('should throw an error if state is not defined', (): void => {
+            const state: any = undefined;
+            expect((): any => new Robot(state)).toThrow();
+        });
+
         it('should create a defined instance', (): void => {
             expect(aRobot(aPoint(0, 0), Orientation.North)).toBeDefined();
         });
