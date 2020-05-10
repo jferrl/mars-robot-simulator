@@ -1,3 +1,5 @@
+import { isDefined } from './guard';
+
 export interface Point {
     x: number;
     y: number;
@@ -10,7 +12,10 @@ export interface Grid {
 export default class MarsSurface implements Grid {
     private static readonly zero: number = 0;
 
-    constructor(private readonly width: number, private readonly height: number) {}
+    constructor(private readonly width: number, private readonly height: number) {
+        isDefined(width, 'width');
+        isDefined(height, 'height');
+    }
 
     hasPoint(point: Point): boolean {
         return this.isInXAxisScope(point.x) && this.isInYAxisScope(point.y);

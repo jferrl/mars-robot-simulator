@@ -6,6 +6,16 @@ import { aPoint, marsSurface } from './helpers';
 
 describe('MarsSurface', (): void => {
     describe('constructor', (): void => {
+        it('should throw an error if width is not defined', (): void => {
+            const width: any = undefined;
+            expect((): any => new MarsSurface(width, 8)).toThrow();
+        });
+
+        it('should throw an error if height is not defined', (): void => {
+            const height: any = undefined;
+            expect((): any => new MarsSurface(8, height)).toThrow();
+        });
+
         it('should create a defined instance', (): void => {
             expect(marsSurface(0, 0)).toBeDefined();
         });
