@@ -1,4 +1,3 @@
-import { Point } from './grid';
 import { Orientation } from './position';
 import { cloneState, State, Trace } from './state';
 
