@@ -21,10 +21,6 @@ export default class RobotState {
         return this.currentState.orientation;
     }
 
-    protected get coordinate(): Point {
-        return this.currentState.coordinate;
-    }
-
     protected get trace(): Trace {
         return {
             from: cloneState(this.previousState),
