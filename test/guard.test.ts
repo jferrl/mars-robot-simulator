@@ -11,6 +11,6 @@ describe('isDefined', (): void => {
         [null, 'fakeObject', true],
         [fakeObject, 'fakeObject', false]
     ]).test('returs the passed value if it is defined', (value: any, name: string, error: boolean): void => {
-        error ? expect((): void => isDefined(value, name)).toThrow() : expect(isDefined(value, name)).toEqual(value);
+        error ? expect((): any => isDefined(value, name)).toThrow() : expect(isDefined(value, name)).toEqual(value);
     });
 });

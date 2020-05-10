@@ -1,5 +1,6 @@
 import { Command } from './command';
 import { Grid } from './grid';
+import { isDefined } from './guard';
 import { Orientation } from './position';
 import Robot from './robot';
 import { Hint, State, Trace } from './state';
@@ -14,15 +15,19 @@ export default class Simulator {
     private readonly invalidStates: Hint[];
 
     constructor(private readonly grid: Grid) {
+        isDefined(grid, 'grid');
         this.simulations = [];
         this.invalidStates = [];
     }
 
     withSimulations(simulations: Simulation[]): void {
+        isDefined(simulations, 'simulations');
         this.simulations.push(...simulations);
     }
 
     createSimulation(robot: Robot, commands: Command[]): number {
+        isDefined(robot, 'robot');
+        isDefined(commands, 'commands');
         return this.simulations.push({ robot, commands });
     }
 

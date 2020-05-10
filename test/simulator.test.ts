@@ -10,12 +10,28 @@ describe('Simulator', (): void => {
     const aSimulator = (width: number, height: number): Simulator => new Simulator(marsSurface(width, height));
 
     describe('constructor', (): void => {
+        it('should throw an error if grid is not defined', (): void => {
+            const grid: any = undefined;
+            expect((): any => new Simulator(grid)).toThrow();
+        });
         it('should create a defined instance', (): void => {
             expect(aSimulator(0, 0)).toBeDefined();
         });
     });
 
     describe('createSimulation', (): void => {
+        it('should throw an error if robot is not defined', (): void => {
+            const simulator = aSimulator(10, 10);
+            const robot: any = undefined;
+            expect((): any => simulator.createSimulation(robot, [Command.Forward, Command.Left])).toThrow();
+        });
+
+        it('should throw an error if commands are not defined', (): void => {
+            const simulator = aSimulator(10, 10);
+            const commands: any = undefined;
+            expect((): any => simulator.createSimulation(aRobot(aPoint(0, 0), Orientation.North), commands)).toThrow();
+        });
+
         it('should add new simulation without error', (): void => {
             const simulator = aSimulator(10, 10);
 
