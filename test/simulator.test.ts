@@ -4,16 +4,22 @@ import { Command } from '../src/command';
 import { Orientation } from '../src/position';
 import Simulator, { Simulation } from '../src/simulator';
 
-import { aPoint, aRobot, aState, marsSurface } from './helpers';
+import { aPoint, aRobot, aState, marsSurface, roverFactory } from './helpers';
 
 describe('Simulator', (): void => {
-    const aSimulator = (width: number, height: number): Simulator => new Simulator(marsSurface(width, height));
+    const aSimulator = (width: number, height: number): Simulator => new Simulator(marsSurface(width, height), roverFactory());
 
     describe('constructor', (): void => {
         it('should throw an error if grid is not defined', (): void => {
             const grid: any = undefined;
-            expect((): any => new Simulator(grid)).toThrow();
+            expect((): any => new Simulator(grid, roverFactory())).toThrow();
         });
+
+        it('should throw an error if factory is not defined', (): void => {
+            const factory: any = undefined;
+            expect((): any => new Simulator(marsSurface(0, 0), factory)).toThrow();
+        });
+
         it('should create a defined instance', (): void => {
             expect(aSimulator(0, 0)).toBeDefined();
         });

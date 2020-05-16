@@ -2,16 +2,16 @@ import each from 'jest-each';
 
 import { Command } from '../src/command';
 import { Orientation } from '../src/position';
-import Robot from '../src/robot';
+import { Robot, Rover } from '../src/robot';
 import { Hint, Trace } from '../src/state';
 
 import { aPoint, aRobot, aState } from './helpers';
 
-describe('Robot', (): void => {
+describe('Rover', (): void => {
     describe('constructor', (): void => {
         it('should throw an error if state is not defined', (): void => {
             const state: any = undefined;
-            expect((): any => new Robot(state)).toThrow();
+            expect((): any => new Rover(state)).toThrow();
         });
 
         it('should create a defined instance', (): void => {

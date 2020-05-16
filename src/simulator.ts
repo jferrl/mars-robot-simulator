@@ -2,7 +2,8 @@ import { Command } from './command';
 import { Grid, Point } from './grid';
 import { isDefined } from './guard';
 import { Orientation } from './position';
-import Robot from './robot';
+import { Robot } from './robot';
+import { RobotFactory } from './robot-factory';
 import { Hint, State, Trace } from './state';
 
 export interface Simulation {
@@ -14,8 +15,9 @@ export default class Simulator {
     private readonly simulations: Simulation[];
     private readonly invalidStates: Hint[];
 
-    constructor(private readonly grid: Grid) {
+    constructor(private readonly grid: Grid, private readonly robotFactory: RobotFactory) {
         isDefined(grid, 'grid');
+        isDefined(robotFactory, 'robotFactory');
         this.simulations = [];
         this.invalidStates = [];
     }
@@ -33,13 +35,15 @@ export default class Simulator {
         if (!this.isValidCoordinate(robotState.coordinate)) {
             throw new Error('invalid robot coordinate: out of map scope');
         }
-        return this.simulations.push({ robot: new Robot(robotState), commands });
+        const robot = this.robotFactory.createRobot(robotState);
+        return this.simulations.push({ robot, commands });
     }
 
     start(): string[] {
         const results: string[] = [];
         this.simulations.forEach((simulation: Simulation): void => {
-            const result = this.runSimulation(simulation.robot.withHints(this.invalidStates), simulation.commands);
+            const robot = simulation.robot.withHints(this.invalidStates);
+            const result = this.runSimulation(robot, simulation.commands);
             results.push(result);
         });
         return results;

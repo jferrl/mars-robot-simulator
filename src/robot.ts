@@ -5,7 +5,12 @@ import { computeOrientation, Orientation, Rotation } from './position';
 import RobotState from './robot-state';
 import { cloneState, Hint, State, Trace } from './state';
 
-export default class Robot extends RobotState {
+export interface Robot {
+    execute(command: Command): Trace;
+    withHints(hints: Hint[]): Robot;
+}
+
+export class Rover extends RobotState implements Robot {
     private hints: Hint[];
 
     constructor(state: State) {
