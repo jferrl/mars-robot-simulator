@@ -1,25 +1,24 @@
 import { Command } from './command';
 import { Grid, Point } from './grid';
 import { isDefined } from './guard';
-import { Orientation } from './position';
+import { HintsStorage } from './hints-storage';
 import { Robot } from './robot';
 import { RobotFactory } from './robot-factory';
-import { Hint, State, Trace } from './state';
+import { formatStateResult, State, Trace } from './state';
 
 export interface Simulation {
-    robot: Robot;
     commands: Command[];
+    robotState: State;
 }
 
 export default class Simulator {
     private readonly simulations: Simulation[];
-    private readonly invalidStates: Hint[];
 
-    constructor(private readonly grid: Grid, private readonly robotFactory: RobotFactory) {
+    constructor(private readonly grid: Grid, private readonly robotFactory: RobotFactory, private readonly hintsStorage: HintsStorage) {
         isDefined(grid, 'grid');
         isDefined(robotFactory, 'robotFactory');
+        isDefined(hintsStorage, 'hintsStorage');
         this.simulations = [];
-        this.invalidStates = [];
     }
 
     // bulk insert of simulations (only for test Simulator)
@@ -28,21 +27,20 @@ export default class Simulator {
         this.simulations.push(...simulations);
     }
 
-    createSimulation(robotState: State, commands: Command[]): number {
+    createSimulation(commands: Command[], robotState: State): number {
         isDefined(robotState, 'robotState');
         isDefined(commands, 'commands');
 
         if (!this.isValidCoordinate(robotState.coordinate)) {
             throw new Error('invalid robot coordinate: out of map scope');
         }
-        const robot = this.robotFactory.createRobot(robotState);
-        return this.simulations.push({ robot, commands });
+        return this.simulations.push({ commands, robotState });
     }
 
     start(): string[] {
         const results: string[] = [];
         this.simulations.forEach((simulation: Simulation): void => {
-            const robot = simulation.robot.withHints(this.invalidStates);
+            const robot = this.robotFactory.createRobot(simulation.robotState, this.hintsStorage.getAll());
             const result = this.runSimulation(robot, simulation.commands);
             results.push(result);
         });
@@ -50,7 +48,7 @@ export default class Simulator {
     }
 
     private runSimulation(robot: Robot, commands: Command[]): string {
-        let trace: any = {};
+        let trace: Trace = {} as any;
         for (const command of commands) {
             trace = robot.execute(command);
 
@@ -71,11 +69,6 @@ export default class Simulator {
     }
 
     private registerInvalidState(state: State): void {
-        this.invalidStates.push(state);
+        this.hintsStorage.add(state);
     }
 }
-
-const formatStateResult = (state: State, isLost: boolean = false): string => {
-    const template = `${state.coordinate.x}${state.coordinate.y}${Orientation[state.orientation]}`;
-    return isLost ? `${template}LOST` : template;
-};

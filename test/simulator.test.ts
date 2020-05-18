@@ -4,20 +4,25 @@ import { Command } from '../src/command';
 import { Orientation } from '../src/position';
 import Simulator, { Simulation } from '../src/simulator';
 
-import { aPoint, aRobot, aState, marsSurface, roverFactory } from './helpers';
+import { aHintsStorage, aPoint, aState, marsSurface, roverFactory } from './helpers';
 
 describe('Simulator', (): void => {
-    const aSimulator = (width: number, height: number): Simulator => new Simulator(marsSurface(width, height), roverFactory());
+    const aSimulator = (width: number, height: number): Simulator => new Simulator(marsSurface(width, height), roverFactory(), aHintsStorage());
 
     describe('constructor', (): void => {
         it('should throw an error if grid is not defined', (): void => {
             const grid: any = undefined;
-            expect((): any => new Simulator(grid, roverFactory())).toThrow();
+            expect((): any => new Simulator(grid, roverFactory(), aHintsStorage())).toThrow();
         });
 
         it('should throw an error if factory is not defined', (): void => {
             const factory: any = undefined;
-            expect((): any => new Simulator(marsSurface(0, 0), factory)).toThrow();
+            expect((): any => new Simulator(marsSurface(0, 0), factory, aHintsStorage())).toThrow();
+        });
+
+        it('should throw an error if hintsStorage is not defined', (): void => {
+            const hintsStorage: any = undefined;
+            expect((): any => new Simulator(marsSurface(0, 0), roverFactory(), hintsStorage)).toThrow();
         });
 
         it('should create a defined instance', (): void => {
@@ -29,25 +34,25 @@ describe('Simulator', (): void => {
         it('should throw an error if robot is not defined', (): void => {
             const simulator = aSimulator(10, 10);
             const robot: any = undefined;
-            expect((): any => simulator.createSimulation(robot, [Command.Forward, Command.Left])).toThrow();
+            expect((): any => simulator.createSimulation([Command.Forward, Command.Left], robot)).toThrow();
         });
 
         it('should throw an error if commands are not defined', (): void => {
             const simulator = aSimulator(10, 10);
             const commands: any = undefined;
-            expect((): any => simulator.createSimulation(aState(aPoint(0, 0), Orientation.North), commands)).toThrow();
+            expect((): any => simulator.createSimulation(commands, aState(aPoint(0, 0), Orientation.North))).toThrow();
         });
 
         it('should throw an error if robot coordinate is not in the grid scope', (): void => {
             const simulator = aSimulator(10, 10);
-            expect((): any => simulator.createSimulation(aState(aPoint(11, 10), Orientation.North), [Command.Forward, Command.Left])).toThrow();
+            expect((): any => simulator.createSimulation([Command.Forward, Command.Left], aState(aPoint(11, 10), Orientation.North))).toThrow();
         });
 
         it('should add new simulation without error', (): void => {
             const simulator = aSimulator(10, 10);
 
-            expect(simulator.createSimulation(aState(aPoint(0, 0), Orientation.North), [Command.Forward, Command.Left])).toEqual(1);
-            expect(simulator.createSimulation(aState(aPoint(0, 10), Orientation.South), [Command.Forward, Command.Right])).toEqual(2);
+            expect(simulator.createSimulation([Command.Forward, Command.Left], aState(aPoint(0, 0), Orientation.North))).toEqual(1);
+            expect(simulator.createSimulation([Command.Forward, Command.Right], aState(aPoint(0, 10), Orientation.South))).toEqual(2);
         });
     });
     describe('start', (): void => {
@@ -67,7 +72,7 @@ describe('Simulator', (): void => {
                             Command.Right,
                             Command.Forward
                         ],
-                        robot: aRobot(aPoint(1, 1), Orientation.East)
+                        robotState: aState(aPoint(1, 1), Orientation.East)
                     },
                     {
                         commands: [
@@ -85,7 +90,7 @@ describe('Simulator', (): void => {
                             Command.Left,
                             Command.Left
                         ],
-                        robot: aRobot(aPoint(3, 2), Orientation.North)
+                        robotState: aState(aPoint(3, 2), Orientation.North)
                     },
                     {
                         commands: [
@@ -100,9 +105,9 @@ describe('Simulator', (): void => {
                             Command.Forward,
                             Command.Left
                         ],
-                        robot: aRobot(aPoint(0, 3), Orientation.West)
+                        robotState: aState(aPoint(0, 3), Orientation.West)
                     }
-                ],
+                ] as Simulation[],
                 ['11East', '33NorthLOST', '23South']
             ],
             [
@@ -111,13 +116,13 @@ describe('Simulator', (): void => {
                 [
                     {
                         commands: [Command.Right, Command.Right, Command.Left],
-                        robot: aRobot(aPoint(0, 0), Orientation.North)
+                        robotState: aState(aPoint(0, 0), Orientation.North)
                     },
                     {
                         commands: [Command.Right, Command.Forward, Command.Left],
-                        robot: aRobot(aPoint(0, 0), Orientation.South)
+                        robotState: aState(aPoint(0, 0), Orientation.South)
                     }
-                ],
+                ] as Simulation[],
                 ['00East', '00WestLOST']
             ]
         ]).test('should execute all simulations', (width: number, height: number, simulations: Simulation[], expected: string[]): void => {

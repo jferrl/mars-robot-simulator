@@ -1,14 +1,15 @@
 import { isDefined } from './guard';
 import { Robot, Rover } from './robot';
-import { State } from './state';
+import { Hint, State } from './state';
 
 export interface RobotFactory {
-    createRobot(state: State): Robot;
+    createRobot(state: State, hints: Hint[]): Robot;
 }
 
 export class RoverFactory implements RobotFactory {
-    createRobot(state: State): Robot {
+    createRobot(state: State, hints: Hint[]): Robot {
         isDefined(state, 'state');
-        return new Rover(state);
+        isDefined(hints, 'hints');
+        return new Rover(state, hints);
     }
 }

@@ -13,4 +13,9 @@ export interface Trace {
 
 export const cloneState = (state: State): State => ({ coordinate: { ...state.coordinate }, orientation: state.orientation });
 
+export const formatStateResult = (state: State, isLost: boolean = false): string => {
+    const template = `${state.coordinate.x}${state.coordinate.y}${Orientation[state.orientation]}`;
+    return isLost ? `${template}LOST` : template;
+};
+
 export type Hint = State;

@@ -1,19 +1,17 @@
 import { Command } from './command';
+import { isDefined } from './guard';
 import { computeOrientation, Orientation, Rotation } from './position';
 import RobotState from './robot-state';
 import { cloneState, Hint, State, Trace } from './state';
 
 export interface Robot {
     execute(command: Command): Trace;
-    withHints(hints: Hint[]): Robot;
 }
 
 export class Rover extends RobotState implements Robot {
-    private hints: Hint[];
-
-    constructor(state: State) {
+    constructor(state: State, private readonly hints: Hint[]) {
         super(state);
-        this.hints = [];
+        isDefined(hints, 'hints');
     }
 
     execute(command: Command): Trace {
@@ -29,11 +27,6 @@ export class Rover extends RobotState implements Robot {
                 break;
         }
         return this.trace;
-    }
-
-    withHints(hints: Hint[]): Robot {
-        this.hints = hints;
-        return this;
     }
 
     private turnLeft(): void {
