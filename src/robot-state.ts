@@ -1,3 +1,5 @@
+import deepEqual from 'deep-equal';
+
 import { isDefined } from './guard';
 import { Orientation } from './position';
 import { cloneState, State, Trace } from './state';
@@ -29,6 +31,10 @@ export default class RobotState {
             from: cloneState(this.previousState),
             to: cloneState(this.currentState)
         };
+    }
+
+    protected isStateEquals(state: State): boolean {
+        return deepEqual(this.currentState, state, { strict: true });
     }
 
     protected addState(state: State): void {

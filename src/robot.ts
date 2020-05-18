@@ -1,5 +1,3 @@
-import deepEqual from 'deep-equal';
-
 import { Command } from './command';
 import { computeOrientation, Orientation, Rotation } from './position';
 import RobotState from './robot-state';
@@ -74,14 +72,12 @@ export class Rover extends RobotState implements Robot {
     }
 
     private canForward(): boolean {
-        let canForward: boolean = true;
         for (const hint of this.hints) {
-            if (deepEqual(this.currentState, hint, { strict: true })) {
-                canForward = false;
-                break;
+            if (this.isStateEquals(hint)) {
+                return false;
             }
         }
-        return canForward;
+        return true;
     }
 
     private rotate(rotation: Rotation): void {
