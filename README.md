@@ -78,7 +78,7 @@ position and orientation of the robot. If a robot falls off the edge of the grid
 
 03W LLFFFLFLFL
 
-Sample Output
+### Sample Output
 
 11E
 
