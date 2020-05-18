@@ -82,5 +82,7 @@ Sample Output
 
 11E
 
-33NLOST 23S
+33NLOST 
+
+23S
 
